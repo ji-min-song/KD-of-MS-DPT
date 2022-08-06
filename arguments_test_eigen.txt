@@ -1,0 +1,9 @@
+--data_path D:\\kitti_depth
+--dataset kitti
+--filenames_file ./train_test_inputs/eigen_test_files_with_gt.txt
+--model_name kd_ude_eigenh_test
+--checkpoint_path ./experiments/bts_eigen_v2_pytorch_test/model-272000-best_silog_8.18476
+--input_height 352
+--input_width 1216
+--max_depth 80
+--do_kb_crop
