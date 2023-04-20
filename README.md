@@ -1,4 +1,4 @@
-# KD_UDE
+# KD of MS-DPT for Self-supervised Depth Estimation
 Knowledge Distillation of Multi-scale Dense Prediction Transformer for Self-supervised Depth Estimation
 
 ## Preparation
