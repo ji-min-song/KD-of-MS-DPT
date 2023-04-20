@@ -27,7 +27,7 @@ The above codes and instructions are provided by [BTS](https://github.com/cleinc
 ### Pretrained weights
 Download [DPT large model's initial weight](https://drive.google.com/file/d/1TWpC6cRCpPXLIAd20gz_i31z65CnV2Ah/view?usp=share_link) pretrained on the MIX 6 dataset. This weight are provided by [DPT](https://github.com/isl-org/DPT)   
 Download [Ours student's pretrained weight](https://drive.google.com/file/d/1PB6oZiEZzYR7qvRHIKogub1jezpoBbTv/view?usp=share_link) trained on the KITTI dataset.   
-Place the two downloaded weights in the './models/DPT_student'   
+Place the two downloaded weights in the './models/DPT_student' like below folder structure.   
 ~~~   
 ──┬ KD-of-MS-DPT
   ├── train_test_inputs
