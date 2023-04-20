@@ -52,4 +52,9 @@ $ python test.py arguments_test_eigen.txt
 
 ## Acknowledgement
 This repository makes extensive use of code from the [BTS](https://github.com/cleinc/bts) & [DPT](https://github.com/isl-org/DPT) Github repository.  
-We thank the authors for open sourcing their implementation.
+We thank the authors for open sourcing their implementation.   
+    
+or   
+   
+We are grateful for the open-source implementation of [BTS](https://github.com/cleinc/bts) & [DPT](https://github.com/isl-org/DPT) Github repository available on GitHub.
+
