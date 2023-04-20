@@ -1,5 +1,5 @@
---data_path /hdd1/kitti_rawdata/
---gt_path /hdd1/kitti_data_depth_annotated/total
+--data_path ~/workspace/dataset/kitti_dataset
+--gt_path ~/workspace/dataset/data_depth_annotated
 --dataset kitti
 --filenames_file ./train_test_inputs/eigen_test_files_with_gt.txt
 --model_name kd_ude_eigen_test
