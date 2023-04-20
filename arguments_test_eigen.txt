@@ -1,8 +1,8 @@
 --data_path ~/workspace/dataset/kitti_dataset
---gt_path ~/workspace/dataset/data_depth_annotated
+--gt_path ~/workspace/dataset/data_depth_annotated/val
 --dataset kitti
 --filenames_file ./train_test_inputs/eigen_test_files_with_gt.txt
---model_name kd_ude_eigen_test
+--model_name MS-DPT
 --checkpoint_path ./models/DPT_student/student_depth
 --input_height 352
 --input_width 1216

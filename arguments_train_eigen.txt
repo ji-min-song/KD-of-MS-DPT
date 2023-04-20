@@ -1,8 +1,8 @@
 --mode train
---model_name kd_ude_eigen_test
+--model_name MS-DPT
 --dataset kitti
---data_path /hdd1/kitti_rawdata/
---gt_path /hdd1/kitti_data_depth_annotated/total/
+--data_path ~/workspace/dataset/kitti_dataset
+--gt_path ~/workspace/dataset/data_depth_annotated/train
 --filenames_file ./train_test_inputs/eigen_train_files_with_gt.txt
 --batch_size 1
 --num_epochs 10
@@ -21,8 +21,8 @@
 --log_freq 100
 --do_online_eval
 --eval_freq 1
---data_path_eval /hdd1/kitti_rawdata/
---gt_path_eval /hdd1/kitti_data_depth_annotated/total/
+--data_path_eval ~/workspace/dataset/kitti_dataset
+--gt_path_eval ~/workspace/dataset/data_depth_annotated/val
 --filenames_file_eval ./train_test_inputs/eigen_test_files_with_gt.txt
 --min_depth_eval 1e-3
 --max_depth_eval 80
