@@ -1,16 +1,16 @@
 --mode train
---model_name kd_ude_eigenh_test
+--model_name kd_ude_eigen_test
 --dataset kitti
---data_path D:\\kitti_depth
---gt_path D:\\kitti_depth_annotated\\data_depth_annotated\\total
+--data_path /hdd1/kitti_rawdata/
+--gt_path /hdd1/kitti_data_depth_annotated/total/
 --filenames_file ./train_test_inputs/eigen_train_files_with_gt.txt
 --batch_size 1
 --num_epochs 10
---learning_rate 1e-4
+--learning_rate 1e-5
 --weight_decay 1e-2
 --adam_eps 1e-3
---input_height 192
---input_width 640
+--input_height 352
+--input_width 1216
 --min_depth 1e-3
 --max_depth 80
 --do_kb_crop
@@ -20,9 +20,9 @@
 
 --log_freq 100
 --do_online_eval
---eval_freq 500
---data_path_eval D:\\kitti_depth
---gt_path_eval D:\\kitti_depth_annotated\\data_depth_annotated\\total
+--eval_freq 1
+--data_path_eval /hdd1/kitti_rawdata/
+--gt_path_eval /hdd1/kitti_data_depth_annotated/total/
 --filenames_file_eval ./train_test_inputs/eigen_test_files_with_gt.txt
 --min_depth_eval 1e-3
 --max_depth_eval 80
