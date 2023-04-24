@@ -42,9 +42,6 @@ Place the two downloaded weights in the './models/DPT_student' like below folder
                  :
 ~~~   
 
-## Train
-coming soon
-
 ## Inference
 ~~~   
 $ python test.py arguments_test_eigen.txt   
@@ -53,8 +50,6 @@ $ python test.py arguments_test_eigen.txt
 ## Acknowledgement
 This repository makes extensive use of code from the [BTS](https://github.com/cleinc/bts) & [DPT](https://github.com/isl-org/DPT) Github repository.  
 We thank the authors for open sourcing their implementation.   
-    
-or   
    
-We are grateful for the open-source implementation of [BTS](https://github.com/cleinc/bts) & [DPT](https://github.com/isl-org/DPT) Github repository available on GitHub.
+<!--We are grateful for the open-source implementation of [BTS](https://github.com/cleinc/bts) & [DPT](https://github.com/isl-org/DPT) Github repository available on GitHub.-->
 
