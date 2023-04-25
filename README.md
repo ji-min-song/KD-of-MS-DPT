@@ -5,6 +5,7 @@ abstract & demo video
 ## Preparation
 ### KITTI dataset
 Prepare the [KITTI dataset](https://www.cvlibs.net/datasets/kitti/) following below code.   
+   
 Download and unzip the [ground truth depthmaps](https://www.cvlibs.net/download.php?file=data_depth_annotated.zip).   
 
 ~~~   
@@ -22,11 +23,18 @@ $ aria2c -x 16 -i ../../KD-of-MS-DPT/kitti_archives_to_download.txt
 $ parallel unzip ::: *.zip  
 ~~~    
 
-The above codes and instructions are provided by [BTS](https://github.com/cleinc/bts)   
+The above codes and instructions are provided by [BTS](https://github.com/cleinc/bts).   
+   
+And we duplicate the KITTI dataset and compress for teacher network following [Monodepth2](https://github.com/nianticlabs/monodepth2) which is the baseline of teacher network.   
+
+~~~   
+$ cp ~/workspace/dataset/kitti_dataset/ ~/workspace/dataset/kitti_raw_dataset/
+$ find ~/workspace/dataset/kitti_dataset/ -name '*.png' | parallel 'convert -quality 92 -sampling-factor 2x2,1x1,1x1 {.}.png {.}.jpg && rm {}'
+~~~   
    
 ### Pretrained weights
-Download [DPT large model's initial weight](https://drive.google.com/file/d/1TWpC6cRCpPXLIAd20gz_i31z65CnV2Ah/view?usp=share_link) pretrained on the MIX 6 dataset. This weight are provided by [DPT](https://github.com/isl-org/DPT)   
-Download [Ours student's pretrained weight](https://drive.google.com/file/d/1PB6oZiEZzYR7qvRHIKogub1jezpoBbTv/view?usp=share_link) trained on the KITTI dataset.   
+Download [the weight of the backbone of the DPT large model](https://drive.google.com/file/d/1TWpC6cRCpPXLIAd20gz_i31z65CnV2Ah/view?usp=share_link) pretrained on the MIX 6 dataset. This weight are provided by [DPT](https://github.com/isl-org/DPT)   
+Download [the pretrained weight of our student network](https://drive.google.com/file/d/1PB6oZiEZzYR7qvRHIKogub1jezpoBbTv/view?usp=share_link) trained on the KITTI dataset.   
 Place the two downloaded weights in the './models/DPT_student' like below folder structure.   
 ~~~   
 ──┬ KD-of-MS-DPT
