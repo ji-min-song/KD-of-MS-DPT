@@ -1,6 +1,6 @@
 # KD of MS-DPT for Self-supervised Depth Estimation
 Knowledge Distillation of Multi-scale Dense Prediction Transformer for Self-supervised Depth Estimation   
-abstract & demo video
+abstract & demo video & environment set up
 
 ## Preparation
 ### KITTI dataset
