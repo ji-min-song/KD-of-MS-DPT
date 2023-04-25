@@ -7,7 +7,7 @@ abstract & demo video
 Prepare the [KITTI dataset](https://www.cvlibs.net/datasets/kitti/) following below code.   
    
 Download and unzip the [improved ground truth depthmaps](https://www.cvlibs.net/download.php?file=data_depth_annotated.zip).   
-And you can download original ground truth depthmaps in [here](https://www.cvlibs.net/datasets/kitti/eval_depth.php?benchmark=depth_prediction).
+And you can download original ground truth depthmaps named "projected raw LiDaR scans data set (5 GB)" in [here](https://www.cvlibs.net/datasets/kitti/eval_depth.php?benchmark=depth_prediction).
 
 ~~~   
 $ cd ~/workspace/dataset
