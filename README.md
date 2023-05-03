@@ -51,7 +51,15 @@ Place the two downloaded weights in the './models/DPT_student' like below folder
                  :
 ~~~   
 
+## Train
+Our pipeline needs a total of 2 gpu, one for teacher network and the other for student network.    
+You can choose gpus by specifying it in the 'arguments_train_eigen.txt' file
+~~~   
+$ python train.py arguments_train_eigen.txt   
+~~~ 
+
 ## Inference
+For inference, one gpu is needed because only the student network is required.    
 ~~~   
 $ python test.py arguments_test_eigen.txt   
 ~~~   
