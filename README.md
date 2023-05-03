@@ -2,7 +2,23 @@
 Knowledge Distillation of Multi-scale Dense Prediction Transformer for Self-supervised Depth Estimation   
 abstract & demo video & environment set up
 
-## Preparation
+## Environment setup   
+~~~   
+$ conda create -n MS-DPT python=3.9
+$ conda activate MS-DPT
+
+$ conda install -c anaconda cudatoolkit=11.3
+$ conda install pytorch==1.10.0 torchvision==0.11.0 torchaudio==0.10.0 cudatoolkit=11.3 -c pytorch -c conda-forge
+
+$ conda install -c conda-forge opencv
+$ conda install -c conda-forge einops 
+$ conda install -c conda-forge tensorboardx 
+$ conda install -c conda-forge tqdm 
+$ conda install -c conda-forge timm 
+$ conda install -c conda-forge matplotlib 
+~~~  
+
+## Data preparation   
 ### KITTI dataset
 Prepare the [KITTI dataset](https://www.cvlibs.net/datasets/kitti/) following below code.   
    
