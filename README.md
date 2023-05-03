@@ -33,7 +33,7 @@ $ cp ~/workspace/dataset/kitti_dataset/ ~/workspace/dataset/kitti_raw_dataset/
 $ find ~/workspace/dataset/kitti_dataset/ -name '*.png' | parallel 'convert -quality 92 -sampling-factor 2x2,1x1,1x1 {.}.png {.}.jpg && rm {}'
 ~~~   
    
-### Pretrained weights
+### Pretrained models
 Download [the weight of the backbone of the DPT large model](https://drive.google.com/file/d/1TWpC6cRCpPXLIAd20gz_i31z65CnV2Ah/view?usp=share_link) pretrained on the MIX 6 dataset. This weight are provided by [DPT](https://github.com/isl-org/DPT)   
 Download [the pretrained weight of our student network](https://drive.google.com/file/d/1PB6oZiEZzYR7qvRHIKogub1jezpoBbTv/view?usp=share_link) trained on the KITTI dataset.   
 Place the two downloaded weights in the './models/DPT_student' like below folder structure.   
