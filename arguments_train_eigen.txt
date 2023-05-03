@@ -1,11 +1,12 @@
 --mode train
 --model_name MS-DPT
 --dataset kitti
---data_path ~/workspace/dataset/kitti_dataset
---gt_path ~/workspace/dataset/data_depth_annotated/train
+--data_path ~/workspace/dataset/kitti_rawdata
+--data_teacher_path ~/workspace/dataset/kitti_dataset
+--gt_path ~/workspace/dataset/data_depth_annotated/total
 --filenames_file ./train_test_inputs/eigen_train_files_with_gt.txt
 --batch_size 1
---num_epochs 10
+--num_epochs 5
 --learning_rate 1e-5
 --weight_decay 1e-2
 --adam_eps 1e-3
@@ -17,12 +18,14 @@
 --do_random_rotate
 --degree 1.0
 --log_directory ./experiments
+--teacher_gpu 0
+--student_gpu 1
 
 --log_freq 100
 --do_online_eval
---eval_freq 1
---data_path_eval ~/workspace/dataset/kitti_dataset
---gt_path_eval ~/workspace/dataset/data_depth_annotated/val
+--eval_freq 1000
+--data_path_eval /hdd1/kitti_rawdata/
+--gt_path_eval ~/workspace/dataset/data_depth_annotated/total
 --filenames_file_eval ./train_test_inputs/eigen_test_files_with_gt.txt
 --min_depth_eval 1e-3
 --max_depth_eval 80
