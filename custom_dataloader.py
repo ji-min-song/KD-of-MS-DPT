@@ -12,6 +12,12 @@ import random
 
 from distributed_sampler_no_evenly_divisible import *
 
+def pil_loader(path):
+    # open path as file to avoid ResourceWarning
+    # (https://github.com/python-pillow/Pillow/issues/835)
+    with open(path, 'rb') as f:
+        with Image.open(f) as img:
+            return img.convert('RGB')
 
 def _is_pil_image(img):
     return isinstance(img, Image.Image)
@@ -69,6 +75,7 @@ class DataLoadPreprocess(Dataset):
         self.transform = transform
         self.to_tensor = ToTensor
         self.is_for_online_eval = is_for_online_eval
+        self.loader = pil_loader
     
     def __getitem__(self, idx):
         sample_path = self.filenames[idx]
@@ -86,6 +93,8 @@ class DataLoadPreprocess(Dataset):
                 depth_path = os.path.join(self.args.gt_path, sample_path.split()[1])
 
             image = Image.open(image_path)
+            image_teacher_path = image_path.replace(self.args.data_path,self.args.data_teacher_path).replace('png','jpg')
+            image_teacher = self.loader(image_teacher_path)
             depth_gt = Image.open(depth_path)
             
             if self.args.do_kb_crop is True:
@@ -95,18 +104,22 @@ class DataLoadPreprocess(Dataset):
                 left_margin = int((width - 1216) / 2)
                 depth_gt = depth_gt.crop((left_margin, top_margin, left_margin + 1216, top_margin + 352))
                 image = image.crop((left_margin, top_margin, left_margin + 1216, top_margin + 352))
+                image_teacher = image_teacher.crop((left_margin, top_margin, left_margin + 1216, top_margin + 352))
             
             # To avoid blank boundaries due to pixel registration
             if self.args.dataset == 'nyu':
                 depth_gt = depth_gt.crop((43, 45, 608, 472))
                 image = image.crop((43, 45, 608, 472))
+                image_teacher = image_teacher.crop((43, 45, 608, 472))
     
             if self.args.do_random_rotate is True:
                 random_angle = (random.random() - 0.5) * 2 * self.args.degree
                 image = self.rotate_image(image, random_angle)
+                image_teacher = self.rotate_image(image_teacher, random_angle)
                 depth_gt = self.rotate_image(depth_gt, random_angle, flag=Image.NEAREST)
             
             image = np.asarray(image, dtype=np.float32) / 255.0
+            image_teacher = np.asarray(image_teacher, dtype=np.float32) / 255.0
             depth_gt = np.asarray(depth_gt, dtype=np.float32)
             depth_gt = np.expand_dims(depth_gt, axis=2)
 
@@ -115,9 +128,9 @@ class DataLoadPreprocess(Dataset):
             else:
                 depth_gt = depth_gt / 256.0
 
-            image, depth_gt = self.random_crop(image, depth_gt, self.args.input_height, self.args.input_width)
-            image, depth_gt = self.train_preprocess(image, depth_gt)
-            sample = {'image': image, 'depth': depth_gt, 'focal': focal}
+            image, image_teacher, depth_gt = self.random_crop(image, image_teacher, depth_gt, self.args.input_height, self.args.input_width)
+            image, image_teacher, depth_gt = self.train_preprocess(image, image_teacher, depth_gt)
+            sample = {'image': image, 'image_teacher': image_teacher, 'depth': depth_gt, 'focal': focal}
         
         else:
             if self.mode == 'online_eval':
@@ -126,7 +139,9 @@ class DataLoadPreprocess(Dataset):
                 data_path = self.args.data_path
 
             image_path = os.path.join(data_path, sample_path.split()[0])
+            image_teacher_path = image_path.replace(self.args.data_path,self.args.data_teacher_path).replace('png','jpg')
             image = np.asarray(Image.open(image_path), dtype=np.float32) / 255.0
+            image_teacher = np.asarray(self.loader(image_teacher_path), dtype=np.float32) / 255.0
 
             if self.mode == 'online_eval':
                 gt_path = self.args.gt_path_eval
@@ -153,13 +168,14 @@ class DataLoadPreprocess(Dataset):
                 top_margin = int(height - 352)
                 left_margin = int((width - 1216) / 2)
                 image = image[top_margin:top_margin + 352, left_margin:left_margin + 1216, :]
+                image_teacher = image_teacher[top_margin:top_margin + 352, left_margin:left_margin + 1216, :]
                 if self.mode == 'online_eval' and has_valid_depth:
                     depth_gt = depth_gt[top_margin:top_margin + 352, left_margin:left_margin + 1216, :]
             
             if self.mode == 'online_eval':
-                sample = {'image': image, 'depth': depth_gt, 'focal': focal, 'has_valid_depth': has_valid_depth}
+                sample = {'image': image, 'image_teacher': image_teacher, 'depth': depth_gt, 'focal': focal, 'has_valid_depth': has_valid_depth}
             else:
-                sample = {'image': image, 'focal': focal}
+                sample = {'image': image, 'image_teacher': image_teacher, 'focal': focal}
         
         if self.transform:
             sample = self.transform(sample)
@@ -170,7 +186,7 @@ class DataLoadPreprocess(Dataset):
         result = image.rotate(angle, resample=flag)
         return result
 
-    def random_crop(self, img, depth, height, width):
+    def random_crop(self, img, img_teacher, depth, height, width):
         assert img.shape[0] >= height
         assert img.shape[1] >= width
         assert img.shape[0] == depth.shape[0]
@@ -178,22 +194,25 @@ class DataLoadPreprocess(Dataset):
         x = random.randint(0, img.shape[1] - width)
         y = random.randint(0, img.shape[0] - height)
         img = img[y:y + height, x:x + width, :]
+        img_teacher = img_teacher[y:y + height, x:x + width, :]
         depth = depth[y:y + height, x:x + width, :]
-        return img, depth
+        return img, img_teacher, depth
 
-    def train_preprocess(self, image, depth_gt):
+    def train_preprocess(self, image, img_teacher, depth_gt):
         # Random flipping
         do_flip = random.random()
         if do_flip > 0.5:
             image = (image[:, ::-1, :]).copy()
+            img_teacher = (img_teacher[:, ::-1, :]).copy()
             depth_gt = (depth_gt[:, ::-1, :]).copy()
     
         # Random gamma, brightness, color augmentation
         do_augment = random.random()
         if do_augment > 0.5:
             image = self.augment_image(image)
+            img_teacher = self.augment_image(img_teacher)
     
-        return image, depth_gt
+        return image, img_teacher, depth_gt
     
     def augment_image(self, image):
         # gamma augmentation
@@ -226,20 +245,22 @@ class ToTensor(object):
         self.normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     
     def __call__(self, sample):
-        image, focal = sample['image'], sample['focal']
+        image, image_teacher, focal = sample['image'], sample['image_teacher'], sample['focal']
         image = self.to_tensor(image)
+        image_teacher = self.to_tensor(image_teacher)
         image = self.normalize(image)
+        #image_teacher = self.normalize(image_teacher)
 
         if self.mode == 'test':
-            return {'image': image, 'focal': focal}
+            return {'image': image, 'image_teacher': image_teacher, 'focal': focal}
 
         depth = sample['depth']
         if self.mode == 'train':
             depth = self.to_tensor(depth)
-            return {'image': image, 'depth': depth, 'focal': focal}
+            return {'image': image, 'image_teacher': image_teacher, 'depth': depth, 'focal': focal}
         else:
             has_valid_depth = sample['has_valid_depth']
-            return {'image': image, 'depth': depth, 'focal': focal, 'has_valid_depth': has_valid_depth}
+            return {'image': image, 'image_teacher': image_teacher, 'depth': depth, 'focal': focal, 'has_valid_depth': has_valid_depth}
     
     def to_tensor(self, pic):
         if not (_is_pil_image(pic) or _is_numpy_image(pic)):
