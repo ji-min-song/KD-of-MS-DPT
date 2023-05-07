@@ -1,10 +1,6 @@
 # KD of MS-DPT for Self-supervised Depth Estimation
 ## Knowledge Distillation of Multi-scale Dense Prediction Transformer for Self-supervised Depth Estimation   
-The loss function of previous self-supervised methods is mainly based on a photometric error, which is indirectly computed from synthesized images using depth and pose estimates.   
-In this work, we argue that direct depth cue is more effective to train a depth estimation network.   
-To obtain the direct depth cue, we employed a knowledge distillation technique, which is a teacher-student learning framework.   
-The teacher network was trained in a self-supervised manner based on a photometric error, and its predictions were utilized to train a student network.   
-We constructed a multi-scale dense prediction transformer with Monte Carlo dropout, and multi-scale distillation loss was proposed to train the student network based on the ensemble of stochastic estimates.   
+The loss function of previous self-supervised methods is mainly based on a photometric error, which is indirectly computed from synthesized images using depth and pose estimates. In this work, we argue that direct depth cue is more effective to train a depth estimation network. To obtain the direct depth cue, we employed a knowledge distillation technique, which is a teacher-student learning framework. The teacher network was trained in a self-supervised manner based on a photometric error, and its predictions were utilized to train a student network. We constructed a multi-scale dense prediction transformer with Monte Carlo dropout, and multi-scale distillation loss was proposed to train the student network based on the ensemble of stochastic estimates.   
 <!-- 논문 게제되면 more details ~~~ -->
 
 ## Demo video
