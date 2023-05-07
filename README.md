@@ -3,10 +3,12 @@ Knowledge Distillation of Multi-scale Dense Prediction Transformer for Self-supe
 abstract & demo video
 
 ## Demo video
-<img src="https://github.com/ji-min-song/KD-of-MS-DPT/assets/input.gif" alt="gif">
-<img src="https://github.com/ji-min-song/KD-of-MS-DPT/assets/monodepth2.gif" alt="gif">
-<img src="https://github.com/ji-min-song/KD-of-MS-DPT/assets/teacher.gif" alt="gif">
-<img src="https://github.com/ji-min-song/KD-of-MS-DPT/assets/student.gif" alt="gif">
+<p align="center">
+  <img src="assets/input.gif" width="600" />
+  <img src="assets/monodepth2.gif" width="600" />
+  <img src="assets/teacher.gif" width="600" />
+  <img src="assets/student.gif" width="600" />
+</p>
 
 ## Environment setup   
 ~~~   
