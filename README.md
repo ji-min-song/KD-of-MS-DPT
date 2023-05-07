@@ -2,6 +2,9 @@
 Knowledge Distillation of Multi-scale Dense Prediction Transformer for Self-supervised Depth Estimation   
 abstract & demo video
 
+## Demo video
+![](https://github.com/ji-min-song/KD-of-MS-DPT/assets/2011_09_26_2011_09_26_drive_0029_sync.gif)
+
 ## Environment setup   
 ~~~   
 $ conda create -n MS-DPT python=3.9
